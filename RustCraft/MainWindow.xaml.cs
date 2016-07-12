@@ -27,13 +27,7 @@ namespace RustCraft
             InitializeComponent();
         }
 
-        private void txtItems_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            
-            updateTotal(sender);
-        }
-
-        private void updateTotal(object sender)
+        private void updateTotal(object sender, TextChangedEventArgs e)
         {
             //Get originating textbox
             TextBox txtbox = (TextBox)sender;
