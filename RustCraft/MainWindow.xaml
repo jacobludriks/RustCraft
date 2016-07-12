@@ -5,25 +5,26 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:RustCraft"
         mc:Ignorable="d"
-        Title="RustCraft" Height="308.112" Width="321.144">
+        Title="RustCraft" Height="458.071" Width="350.644">
     <Grid>
         <TextBlock x:Name="textBlock" HorizontalAlignment="Left" Margin="10,34,0,0" TextWrapping="Wrap" Text="Gunpowder" VerticalAlignment="Top"/>
         <TextBlock x:Name="textBlock1" HorizontalAlignment="Left" Margin="10,62,0,0" TextWrapping="Wrap" Text="Explosives" VerticalAlignment="Top"/>
-        <TextBox x:Name="txtGunpowder" HorizontalAlignment="Left" Height="23" Margin="107,33,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="90" TextChanged="updateTotal"/>
-        <TextBox x:Name="txtExplosives" HorizontalAlignment="Left" Height="23" Margin="107,61,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="90" TextChanged="updateTotal"/>
-        <TextBox x:Name="txtGunpowderTotal" HorizontalAlignment="Left" Height="23" Margin="217,33,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="86" IsEnabled="False" Text="0"/>
-        <TextBox x:Name="txtExplosivesTotal" HorizontalAlignment="Left" Height="23" Margin="217,61,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="86" IsEnabled="False" Text="0"/>
-        <TextBlock x:Name="textBlock2" HorizontalAlignment="Left" Margin="217,6,0,0" TextWrapping="Wrap" Text="Total" VerticalAlignment="Top"/>
-        <TextBlock x:Name="textBlock3" HorizontalAlignment="Left" Margin="107,6,0,0" TextWrapping="Wrap" Text="Units" VerticalAlignment="Top"/>
-        <TextBox x:Name="txtSubtotal" HorizontalAlignment="Left" Height="23" Margin="217,159,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="86" IsEnabled="False" Text="0"/>
+        <TextBox x:Name="txtGunpowder" HorizontalAlignment="Left" Height="23" Margin="125,33,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="90" TextChanged="updateTotal"/>
+        <TextBox x:Name="txtExplosives" HorizontalAlignment="Left" Height="23" Margin="125,61,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="90" TextChanged="updateTotal"/>
+        <TextBox x:Name="txtGunpowderTotal" HorizontalAlignment="Left" Height="23" Margin="235,33,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="86" IsEnabled="False" Text="0"/>
+        <TextBox x:Name="txtExplosivesTotal" HorizontalAlignment="Left" Height="23" Margin="235,61,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="86" IsEnabled="False" Text="0"/>
+        <TextBlock x:Name="textBlock2" HorizontalAlignment="Left" Margin="235,6,0,0" TextWrapping="Wrap" Text="Total" VerticalAlignment="Top"/>
+        <TextBlock x:Name="textBlock3" HorizontalAlignment="Left" Margin="125,6,0,0" TextWrapping="Wrap" Text="Units" VerticalAlignment="Top"/>
+        <TextBox x:Name="txtSubtotal" HorizontalAlignment="Left" Height="23" Margin="235,159,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="86" IsEnabled="False" Text="0"/>
         <TextBlock x:Name="textBlock4" HorizontalAlignment="Left" Margin="10,201,0,0" TextWrapping="Wrap" Text="Rust shutdown time" VerticalAlignment="Top"/>
         <TextBox x:Name="txtShutdown" HorizontalAlignment="Left" Height="23" Margin="129,199,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="79" IsEnabled="False"/>
-        <Button x:Name="btnToggle" Content="Enable Rust Shutdown" HorizontalAlignment="Left" Margin="79,233,0,0" VerticalAlignment="Top" Width="164" Click="btnToggle_Click" IsEnabled="False"/>
+        <Button x:Name="btnToggle" Content="Enable Rust Shutdown" HorizontalAlignment="Left" Margin="94,233,0,0" VerticalAlignment="Top" Width="164" Click="btnToggle_Click" IsEnabled="False"/>
         <TextBlock x:Name="textBlock1_Copy" HorizontalAlignment="Left" Margin="10,90,0,0" TextWrapping="Wrap" Text="5.56 Ammo" VerticalAlignment="Top"/>
-        <TextBox x:Name="txt556Ammo" HorizontalAlignment="Left" Height="23" Margin="107,89,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="90" TextChanged="updateTotal"/>
-        <TextBox x:Name="txt556AmmoTotal" HorizontalAlignment="Left" Height="23" Margin="217,89,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="86" IsEnabled="False" Text="0"/>
+        <TextBox x:Name="txt556Ammo" HorizontalAlignment="Left" Height="23" Margin="125,89,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="90" TextChanged="updateTotal"/>
+        <TextBox x:Name="txt556AmmoTotal" HorizontalAlignment="Left" Height="23" Margin="235,89,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="86" IsEnabled="False" Text="0"/>
         <TextBlock x:Name="textBlock1_Copy1" HorizontalAlignment="Left" Margin="10,118,0,0" TextWrapping="Wrap" Text="Low Grade Fuel" VerticalAlignment="Top"/>
-        <TextBox x:Name="txtLGF" HorizontalAlignment="Left" Height="23" Margin="107,117,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="90" TextChanged="updateTotal"/>
-        <TextBox x:Name="txtLGFTotal" HorizontalAlignment="Left" Height="23" Margin="217,117,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="86" IsEnabled="False" Text="0"/>
+        <TextBox x:Name="txtLGF" HorizontalAlignment="Left" Height="23" Margin="125,117,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="90" TextChanged="updateTotal"/>
+        <TextBox x:Name="txtLGFTotal" HorizontalAlignment="Left" Height="23" Margin="235,117,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="86" IsEnabled="False" Text="0"/>
+        <ListBox x:Name="lbLog" HorizontalAlignment="Left" Height="135" Margin="10,267,0,0" VerticalAlignment="Top" Width="311"/>
     </Grid>
 </Window>

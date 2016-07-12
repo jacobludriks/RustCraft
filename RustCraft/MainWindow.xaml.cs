@@ -155,6 +155,10 @@ namespace RustCraft
                     this.timer.Change(Timeout.Infinite, Timeout.Infinite);
                     enabled = false;
                     btnToggle.Content = "Enable Rust Shutdown";
+
+                    //Create new log item and insert to listbox
+                    DateTime date = DateTime.Now;
+                    NewLogEntry("Rust shut down at " + date.ToString("hh:mm:ss tt"));
                 }));
             }
             catch(Exception ex)
@@ -175,6 +179,9 @@ namespace RustCraft
                 this.timer.Change(Timeout.Infinite, Timeout.Infinite);
                 btnToggle.Content = "Enable Rust Shutdown";
                 enabled = false;
+
+                //Create new log item and insert to listbox
+                NewLogEntry("Disabled Rust Shutdown");
             }
             else
             {
@@ -186,12 +193,24 @@ namespace RustCraft
                     SetUpTimer(ts);
                     btnToggle.Content = "Disable Rust Shutdown";
                     enabled = true;
+
+                    //Create new log item and insert to listbox
+                    NewLogEntry("Enabled Rust Shutdown for " + date.ToString("hh:mm:ss tt"));
                 }
                 else
                 {
                     MessageBox.Show("Unable to set timer");
                 }
             }
+        }
+
+        private void NewLogEntry(string msg)
+        {
+            //Create new log item and insert to listbox
+            var timenow = DateTime.Now.ToString("hh:mm:ss tt");
+            ListBoxItem itm = new ListBoxItem();
+            itm.Content = timenow + " - " + msg;
+            lbLog.Items.Insert(0, itm);
         }
     }
 }
