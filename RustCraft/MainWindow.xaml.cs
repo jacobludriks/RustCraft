@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Diagnostics;
+using System.Threading;
 
 namespace RustCraft
 {
@@ -97,14 +98,28 @@ namespace RustCraft
             int subtotal = gunpowder + explosives + ammo + lgf;
             txtSubtotal.Text = subtotal.ToString();
 
-            //Get Rust shutdown time and put in field
-            var timenow = DateTime.Now;
-            var shutdowntime = timenow.AddSeconds(subtotal);
+            if (subtotal > 0)
+            {
+                //Get Rust shutdown time and put in field
+                var timenow = DateTime.Now;
+                var shutdowntime = timenow.AddSeconds(subtotal);
 
-            txtShutdown.Text = shutdowntime.ToString("hh:mm:ss tt");
+                txtShutdown.Text = shutdowntime.ToString("hh:mm:ss tt");
+
+                btnToggle.IsEnabled = true;
+            }
+            else
+            {
+                txtShutdown.Text = "";
+                if (btnToggle.IsEnabled)
+                {
+                    btnToggle.IsEnabled = false;
+                }
+            }
         }
 
-        private System.Threading.Timer timer;
+        private Timer timer;
+        private bool enabled = false;
 
         private void SetUpTimer(TimeSpan alertTime)
         {
@@ -115,10 +130,10 @@ namespace RustCraft
                 //Time has already passed
                 return;
             }
-            this.timer = new System.Threading.Timer(x =>
+            this.timer = new Timer(x =>
             {
                 this.ShutdownRust();
-            }, null, timeToGo, System.Threading.Timeout.InfiniteTimeSpan);
+            }, null, timeToGo, Timeout.InfiniteTimeSpan);
         }
 
         private void ShutdownRust()
@@ -140,8 +155,30 @@ namespace RustCraft
 
         private void btnToggle_Click(object sender, RoutedEventArgs e)
         {
-            //Set new timer on button toggle
-            SetUpTimer(new TimeSpan());
+            //Check if timer is already enabled
+            if (enabled)
+            {
+                //Change timer to never resume and change button text
+                this.timer.Change(Timeout.Infinite, Timeout.Infinite);
+                btnToggle.Content = "Enable Rust Shutdown";
+                enabled = false;
+            }
+            else
+            {
+                //Set new timer
+                DateTime date = DateTime.MinValue;
+                if (DateTime.TryParse(txtShutdown.Text, out date))
+                {
+                    TimeSpan ts = new TimeSpan(date.Hour, date.Minute, date.Second);
+                    SetUpTimer(ts);
+                    btnToggle.Content = "Disable Rust Shutdown";
+                    enabled = true;
+                }
+                else
+                {
+                    MessageBox.Show("Unable to set timer");
+                }
+            }
         }
     }
 }

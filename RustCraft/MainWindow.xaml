@@ -18,7 +18,7 @@
         <TextBox x:Name="txtSubtotal" HorizontalAlignment="Left" Height="23" Margin="217,159,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="86" IsEnabled="False" Text="0"/>
         <TextBlock x:Name="textBlock4" HorizontalAlignment="Left" Margin="10,201,0,0" TextWrapping="Wrap" Text="Rust shutdown time" VerticalAlignment="Top"/>
         <TextBox x:Name="txtShutdown" HorizontalAlignment="Left" Height="23" Margin="129,199,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="79" IsEnabled="False"/>
-        <Button x:Name="btnToggle" Content="Enable Rust Shutdown" HorizontalAlignment="Left" Margin="79,233,0,0" VerticalAlignment="Top" Width="164" Click="btnToggle_Click"/>
+        <Button x:Name="btnToggle" Content="Enable Rust Shutdown" HorizontalAlignment="Left" Margin="79,233,0,0" VerticalAlignment="Top" Width="164" Click="btnToggle_Click" IsEnabled="False"/>
         <TextBlock x:Name="textBlock1_Copy" HorizontalAlignment="Left" Margin="10,90,0,0" TextWrapping="Wrap" Text="5.56 Ammo" VerticalAlignment="Top"/>
         <TextBox x:Name="txt556Ammo" HorizontalAlignment="Left" Height="23" Margin="107,89,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="90" TextChanged="txtItems_TextChanged"/>
         <TextBox x:Name="txt556AmmoTotal" HorizontalAlignment="Left" Height="23" Margin="217,89,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="86" IsEnabled="False" Text="0"/>
