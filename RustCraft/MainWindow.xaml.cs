@@ -146,6 +146,22 @@ namespace RustCraft
                     //Kill each client, even though there should only be one
                     proc.Kill();
                 }
+
+                //Do actions on the main thread instead of the timer background thread
+                this.Dispatcher.Invoke((Action)(() =>
+                {
+                    //Reset all text fields and update totals
+                    txtGunpowder.Text = "";
+                    txtExplosives.Text = "";
+                    txt556Ammo.Text = "";
+                    txtLGF.Text = "";
+                    CalculateTotal();
+
+                    //Change timer to never resume and change button text
+                    this.timer.Change(Timeout.Infinite, Timeout.Infinite);
+                    enabled = false;
+                    btnToggle.Content = "Enable Rust Shutdown";
+                }));
             }
             catch(Exception ex)
             {
@@ -155,6 +171,9 @@ namespace RustCraft
 
         private void btnToggle_Click(object sender, RoutedEventArgs e)
         {
+            //Calculate totals
+            CalculateTotal();
+
             //Check if timer is already enabled
             if (enabled)
             {
