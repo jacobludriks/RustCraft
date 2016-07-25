@@ -5,15 +5,15 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:RustCraft"
         mc:Ignorable="d"
-        Title="RustCraft" Height="586.176" Width="422.848">
-    <Grid Margin="0,0,2,0">
+        Title="RustCraft" Height="586.176" Width="427.506">
+    <Grid Margin="0,0,-29,-4">
         <TextBlock x:Name="textBlock" HorizontalAlignment="Left" Margin="10,34,0,0" TextWrapping="Wrap" Text="Gun Powder" VerticalAlignment="Top"/>
         <TextBlock x:Name="textBlock1" HorizontalAlignment="Left" Margin="10,62,0,0" TextWrapping="Wrap" Text="Explosives" VerticalAlignment="Top"/>
         <TextBox x:Name="txtGunpowder" HorizontalAlignment="Left" Height="23" Margin="207,33,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="90" TextChanged="updateTotal"/>
         <TextBox x:Name="txtExplosives" HorizontalAlignment="Left" Height="23" Margin="207,61,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="90" TextChanged="updateTotal"/>
         <TextBox x:Name="txtGunpowderTotal" HorizontalAlignment="Left" Height="23" Margin="317,33,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="86" IsEnabled="False" Text="0"/>
         <TextBox x:Name="txtExplosivesTotal" HorizontalAlignment="Left" Height="23" Margin="317,61,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="86" IsEnabled="False" Text="0"/>
-        <TextBlock x:Name="textBlock2" HorizontalAlignment="Left" Margin="317,6,0,0" TextWrapping="Wrap" Text="Total (in seconds)" VerticalAlignment="Top"/>
+        <TextBlock x:Name="textBlock2" HorizontalAlignment="Left" Margin="317,6,0,0" TextWrapping="Wrap" Text="Total" VerticalAlignment="Top"/>
         <TextBlock x:Name="textBlock3" HorizontalAlignment="Left" Margin="207,6,0,0" TextWrapping="Wrap" Text="Units" VerticalAlignment="Top"/>
         <TextBox x:Name="txtSubtotal" HorizontalAlignment="Left" Height="23" Margin="317,307,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="86" IsEnabled="False" Text="0"/>
         <TextBlock x:Name="textBlock4" HorizontalAlignment="Left" Margin="12,337,0,0" TextWrapping="Wrap" Text="Rust shutdown time" VerticalAlignment="Top"/>

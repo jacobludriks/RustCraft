@@ -54,6 +54,21 @@ namespace RustCraft
                 case "txtLGF":
                     value = value * 5;
                     break;
+                case "txtRockets":
+                    value = value * 10;
+                    break;
+                case "txtC4":
+                    value = value * 30;
+                    break;
+                case "txtGuns":
+                    value = value * 180;
+                    break;
+                case "txtArmor":
+                    value = value * 60;
+                    break;
+                case "txtClothes":
+                    value = value * 30;
+                    break;
                 default:
                     break;
             }
@@ -61,7 +76,8 @@ namespace RustCraft
             //Put value in the "Total" textbox
             string totaltextbox = txtbox.Name.ToString() + "Total";
             TextBox Total = (TextBox)this.FindName(totaltextbox);
-            Total.Text = value.ToString();
+            TimeSpan crafttime = TimeSpan.FromSeconds(value);
+            Total.Text = crafttime.ToString();
 
             //Calculate total and shutdown time
             CalculateTotal();
@@ -70,27 +86,57 @@ namespace RustCraft
         private void CalculateTotal()
         {
             //Get values
-            int gunpowder, explosives, ammo, lgf;
-            if (int.TryParse(txtGunpowderTotal.Text, out gunpowder) == false)
+            int gunpowder, explosives, ammo, lgf, rockets, c4, guns, armor, clothes;
+            if (int.TryParse(txtGunpowder.Text, out gunpowder) == false)
             {
                 gunpowder = 0;
             }
-            if (int.TryParse(txtExplosivesTotal.Text, out explosives) == false)
+            if (int.TryParse(txtExplosives.Text, out explosives) == false)
             {
                 explosives = 0;
             }
-            if (int.TryParse(txt556AmmoTotal.Text, out ammo) == false)
+            if (int.TryParse(txt556Ammo.Text, out ammo) == false)
             {
                 ammo = 0;
             }
-            if (int.TryParse(txtLGFTotal.Text, out lgf) == false)
+            if (int.TryParse(txtLGF.Text, out lgf) == false)
             {
                 lgf = 0;
             }
+            if (int.TryParse(txtRockets.Text, out rockets) == false)
+            {
+                rockets = 0;
+            }
+            if (int.TryParse(txtC4.Text, out c4) == false)
+            {
+                c4 = 0;
+            }
+            if (int.TryParse(txtGuns.Text, out guns) == false)
+            {
+                guns = 0;
+            }
+            if (int.TryParse(txtArmor.Text, out armor) == false)
+            {
+                armor = 0;
+            }
+            if (int.TryParse(txtClothes.Text, out clothes) == false)
+            {
+                clothes = 0;
+            }
+            gunpowder = gunpowder * 10;
+            explosives = explosives * 10;
+            ammo = ammo * 10;
+            lgf = lgf * 10;
+            rockets = rockets * 10;
+            c4 = c4 * 30;
+            guns = guns * 180;
+            armor = armor * 60;
+            clothes = clothes * 30;
 
             //Get subtotal and put in subtotal field
-            int subtotal = gunpowder + explosives + ammo + lgf;
-            txtSubtotal.Text = subtotal.ToString();
+            int subtotal = gunpowder + explosives + ammo + lgf + rockets + c4 + guns + armor + clothes;
+            TimeSpan crafttime = TimeSpan.FromSeconds(subtotal);
+            txtSubtotal.Text = crafttime.ToString(@"hh\:mm\:ss");
 
             if (subtotal > 0)
             {
@@ -149,6 +195,11 @@ namespace RustCraft
                     txtExplosives.Text = "";
                     txt556Ammo.Text = "";
                     txtLGF.Text = "";
+                    txtRockets.Text = "";
+                    txtC4.Text = "";
+                    txtGuns.Text = "";
+                    txtArmor.Text = "";
+                    txtClothes.Text = "";
                     CalculateTotal();
 
                     //Change timer to never resume and change button text
