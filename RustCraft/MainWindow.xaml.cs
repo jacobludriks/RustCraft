@@ -14,6 +14,10 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Diagnostics;
 using System.Threading;
+using System.Timers;
+using System.Runtime.InteropServices;
+using System.Windows.Forms;
+
 
 namespace RustCraft
 {
@@ -26,11 +30,14 @@ namespace RustCraft
         {
             InitializeComponent();
         }
+        //API-declaration
+        [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
+        public static extern bool SetForegroundWindow(IntPtr hWnd);
 
         private void updateTotal(object sender, TextChangedEventArgs e)
         {
             //Get originating textbox
-            TextBox txtbox = (TextBox)sender;
+            System.Windows.Controls.TextBox txtbox = (System.Windows.Controls.TextBox)sender;
 
             //Get value from textbox
             int value;
@@ -75,7 +82,7 @@ namespace RustCraft
 
             //Put value in the "Total" textbox
             string totaltextbox = txtbox.Name.ToString() + "Total";
-            TextBox Total = (TextBox)this.FindName(totaltextbox);
+            System.Windows.Controls.TextBox Total = (System.Windows.Controls.TextBox)this.FindName(totaltextbox);
             TimeSpan crafttime = TimeSpan.FromSeconds(value);
             Total.Text = crafttime.ToString();
 
@@ -158,8 +165,60 @@ namespace RustCraft
             }
         }
 
-        private Timer timer;
-        private bool enabled = false;
+        private System.Threading.Timer timer;
+        private System.Timers.Timer tSendKey;
+        private bool blSendKey = false;
+        private bool blShutdown = false;
+
+        private void StartSendKey()
+        {
+            if (blSendKey == false)
+            {
+                tSendKey = new System.Timers.Timer(TimeSpan.FromMinutes(30).TotalMilliseconds);
+                tSendKey.Elapsed += SendKeyHandler;
+                tSendKey.AutoReset = true;
+                tSendKey.Enabled = true;
+                blSendKey = true;
+                this.Dispatcher.Invoke((Action)(() =>
+                {
+                    lblAutoEat.Text = "AUTO EAT";
+                }));
+            }
+        }
+        private void StopSendKey()
+        {
+            this.Dispatcher.Invoke((Action)(() =>
+            {
+                lblAutoEat.Text = "";
+            }));
+            tSendKey.Dispose();
+            blSendKey = false;
+        }
+
+        private void SendKeyHandler(Object source, ElapsedEventArgs e)
+        {
+            SetFocusSendKeys();
+        }
+
+        private void SetFocusSendKeys()
+        {
+            if (blShutdown)
+            {
+                string strProcessName;
+                strProcessName = "Notepad";
+                Process[] arrProcesses = Process.GetProcessesByName(strProcessName);
+                if (arrProcesses.Length > 0)
+                {
+                    //Use the very first process (if there is many of them)
+                    IntPtr ipHwnd = arrProcesses[0].MainWindowHandle;
+                    bool fSuccess = SetForegroundWindow(ipHwnd);
+                    if (fSuccess)
+                    {
+                        SendKeys.SendWait("6");
+                    }
+                }
+            }  
+        }
 
         private void SetUpTimer(TimeSpan alertTime)
         {
@@ -170,7 +229,7 @@ namespace RustCraft
                 //Time has already passed
                 return;
             }
-            this.timer = new Timer(x =>
+            this.timer = new System.Threading.Timer(x =>
             {
                 this.ShutdownRust();
             }, null, timeToGo, Timeout.InfiniteTimeSpan);
@@ -181,12 +240,15 @@ namespace RustCraft
             try
             {
                 //Find processes with the name RustClient
-                foreach (Process proc in Process.GetProcessesByName("RustClient"))
+                foreach (Process proc in Process.GetProcessesByName("Notepad"))
                 {
                     //Kill each client, even though there should only be one
                     proc.Kill();
                 }
-
+                if (blSendKey)
+                {
+                    StopSendKey();
+                }
                 //Do actions on the main thread instead of the timer background thread
                 this.Dispatcher.Invoke((Action)(() =>
                 {
@@ -204,7 +266,7 @@ namespace RustCraft
 
                     //Change timer to never resume and change button text
                     this.timer.Change(Timeout.Infinite, Timeout.Infinite);
-                    enabled = false;
+                    blShutdown = false;
                     btnToggle.Content = "Enable Rust Shutdown";
 
                     //Create new log item and insert to listbox
@@ -214,7 +276,7 @@ namespace RustCraft
             }
             catch(Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                System.Windows.MessageBox.Show(ex.Message);
             }
         }
 
@@ -224,12 +286,12 @@ namespace RustCraft
             CalculateTotal();
 
             //Check if timer is already enabled
-            if (enabled)
+            if (blShutdown)
             {
                 //Change timer to never resume and change button text
                 this.timer.Change(Timeout.Infinite, Timeout.Infinite);
                 btnToggle.Content = "Enable Rust Shutdown";
-                enabled = false;
+                blShutdown = false;
 
                 //Create new log item and insert to listbox
                 NewLogEntry("Disabled Rust Shutdown");
@@ -243,14 +305,14 @@ namespace RustCraft
                     TimeSpan ts = new TimeSpan(date.Hour, date.Minute, date.Second);
                     SetUpTimer(ts);
                     btnToggle.Content = "Disable Rust Shutdown";
-                    enabled = true;
-
+                    blShutdown = true;
+                    SetFocusSendKeys();
                     //Create new log item and insert to listbox
                     NewLogEntry("Enabled Rust Shutdown for " + date.ToString("hh:mm:ss tt"));
                 }
                 else
                 {
-                    MessageBox.Show("Unable to set timer");
+                    System.Windows.MessageBox.Show("Unable to set timer");
                 }
             }
         }
@@ -262,6 +324,25 @@ namespace RustCraft
             ListBoxItem itm = new ListBoxItem();
             itm.Content = timenow + " - " + msg;
             lbLog.Items.Insert(0, itm);
+        }
+
+        private void Window_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+            if (e.Key == Key.F8 && (Keyboard.Modifiers & (ModifierKeys.Control | ModifierKeys.Shift)) == (ModifierKeys.Control | ModifierKeys.Shift))
+            {
+                if(blSendKey == false)
+                {
+                     StartSendKey();
+                }
+                else
+                {
+                    if (blSendKey == true)
+                    {
+                        StopSendKey();
+                    }
+                }
+
+            }
         }
     }
 }

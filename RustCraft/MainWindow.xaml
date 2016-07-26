@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:RustCraft"
         mc:Ignorable="d"
-        Title="RustCraft" Height="586.176" Width="427.506">
+        Title="RustCraft" Height="586.176" Width="427.506" KeyDown="Window_KeyDown">
     <Grid Margin="0,0,-29,-4">
         <TextBlock x:Name="textBlock" HorizontalAlignment="Left" Margin="10,34,0,0" TextWrapping="Wrap" Text="Gun Powder" VerticalAlignment="Top"/>
         <TextBlock x:Name="textBlock1" HorizontalAlignment="Left" Margin="10,62,0,0" TextWrapping="Wrap" Text="Explosives" VerticalAlignment="Top"/>
@@ -41,5 +41,6 @@
         <TextBlock x:Name="textBlock1_Copy6" HorizontalAlignment="Left" Margin="10,258,0,0" TextWrapping="Wrap" Text="Clothes" VerticalAlignment="Top"/>
         <TextBox x:Name="txtClothes" HorizontalAlignment="Left" Height="23" Margin="207,257,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="90" TextChanged="updateTotal"/>
         <TextBox x:Name="txtClothesTotal" HorizontalAlignment="Left" Height="23" Margin="317,257,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="86" IsEnabled="False" Text="0"/>
+        <TextBlock x:Name="lblAutoEat" HorizontalAlignment="Left" Margin="12,307,0,0" TextWrapping="Wrap" VerticalAlignment="Top"/>
     </Grid>
 </Window>
