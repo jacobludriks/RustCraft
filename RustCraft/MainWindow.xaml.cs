@@ -205,7 +205,7 @@ namespace RustCraft
             if (blShutdown)
             {
                 string strProcessName;
-                strProcessName = "Notepad";
+                strProcessName = "RustClient";
                 Process[] arrProcesses = Process.GetProcessesByName(strProcessName);
                 if (arrProcesses.Length > 0)
                 {
@@ -240,7 +240,7 @@ namespace RustCraft
             try
             {
                 //Find processes with the name RustClient
-                foreach (Process proc in Process.GetProcessesByName("Notepad"))
+                foreach (Process proc in Process.GetProcessesByName("RustClient"))
                 {
                     //Kill each client, even though there should only be one
                     proc.Kill();
