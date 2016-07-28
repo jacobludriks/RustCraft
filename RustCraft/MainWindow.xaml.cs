@@ -170,6 +170,7 @@ namespace RustCraft
         private bool blSendKey = false;
         private bool blShutdown = false;
 
+        //Start timer to set focus and send keys
         private void StartSendKey()
         {
             if (blSendKey == false)
@@ -185,6 +186,8 @@ namespace RustCraft
                 }));
             }
         }
+
+        //Stop the timer
         private void StopSendKey()
         {
             this.Dispatcher.Invoke((Action)(() =>
@@ -200,20 +203,24 @@ namespace RustCraft
             SetFocusSendKeys();
         }
 
+        //This called when the SendKey timer ticks
         private void SetFocusSendKeys()
         {
             if (blShutdown)
             {
                 string strProcessName;
                 strProcessName = "RustClient";
+                //Find the Rust Client
                 Process[] arrProcesses = Process.GetProcessesByName(strProcessName);
                 if (arrProcesses.Length > 0)
                 {
                     //Use the very first process (if there is many of them)
                     IntPtr ipHwnd = arrProcesses[0].MainWindowHandle;
+                    //Set focus to the window
                     bool fSuccess = SetForegroundWindow(ipHwnd);
                     if (fSuccess)
                     {
+                        //Send the 6 key to eat food
                         SendKeys.SendWait("6");
                     }
                 }
@@ -328,11 +335,17 @@ namespace RustCraft
 
         private void Window_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
         {
+            //Capture Ctrl + Shift + F8
             if (e.Key == Key.F8 && (Keyboard.Modifiers & (ModifierKeys.Control | ModifierKeys.Shift)) == (ModifierKeys.Control | ModifierKeys.Shift))
             {
+                //start or stop the timer.
                 if(blSendKey == false)
                 {
                      StartSendKey();
+                    if (blSendKey)
+                    {
+                        SetFocusSendKeys();
+                    }
                 }
                 else
                 {
