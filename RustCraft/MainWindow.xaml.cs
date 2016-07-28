@@ -76,6 +76,9 @@ namespace RustCraft
                 case "txtClothes":
                     value = value * 30;
                     break;
+                case "txtHESW":
+                    value = value * 180;
+                    break;
                 default:
                     break;
             }
@@ -93,7 +96,7 @@ namespace RustCraft
         private void CalculateTotal()
         {
             //Get values
-            int gunpowder, explosives, ammo, lgf, rockets, c4, guns, armor, clothes;
+            int gunpowder, explosives, ammo, lgf, rockets, c4, guns, armor, clothes, hesw;
             if (int.TryParse(txtGunpowder.Text, out gunpowder) == false)
             {
                 gunpowder = 0;
@@ -130,18 +133,24 @@ namespace RustCraft
             {
                 clothes = 0;
             }
+            if (int.TryParse(txtHESW.Text, out hesw) == false)
+            {
+                hesw = 0;
+            }
             gunpowder = gunpowder * 10;
             explosives = explosives * 10;
             ammo = ammo * 10;
-            lgf = lgf * 10;
+            lgf = lgf * 5;
             rockets = rockets * 10;
             c4 = c4 * 30;
             guns = guns * 180;
             armor = armor * 60;
             clothes = clothes * 30;
+            hesw = hesw * 180;
+
 
             //Get subtotal and put in subtotal field
-            int subtotal = gunpowder + explosives + ammo + lgf + rockets + c4 + guns + armor + clothes;
+            int subtotal = gunpowder + explosives + ammo + lgf + rockets + c4 + guns + armor + clothes + hesw;
             TimeSpan crafttime = TimeSpan.FromSeconds(subtotal);
             txtSubtotal.Text = crafttime.ToString(@"hh\:mm\:ss");
 
@@ -186,7 +195,7 @@ namespace RustCraft
                 }));
             }
         }
-
+        
         //Stop the timer
         private void StopSendKey()
         {
@@ -200,11 +209,11 @@ namespace RustCraft
 
         private void SendKeyHandler(Object source, ElapsedEventArgs e)
         {
-            SetFocusSendKeys();
+            SetFocusSendKeys("6");
         }
 
         //This called when the SendKey timer ticks
-        private void SetFocusSendKeys()
+        private void SetFocusSendKeys(string key)
         {
             if (blShutdown)
             {
@@ -221,7 +230,7 @@ namespace RustCraft
                     if (fSuccess)
                     {
                         //Send the 6 key to eat food
-                        SendKeys.SendWait("6");
+                        SendKeys.SendWait(key);
                     }
                 }
             }  
@@ -246,12 +255,21 @@ namespace RustCraft
         {
             try
             {
-                //Find processes with the name RustClient
-                foreach (Process proc in Process.GetProcessesByName("RustClient"))
+
+                //Send E to turn Campfire off
+                SetFocusSendKeys("e");
+
+                //Wait 5 seconds
+                Task.Delay(5000).ContinueWith(_ =>
                 {
-                    //Kill each client, even though there should only be one
-                    proc.Kill();
-                }
+                    //Find processes with the name RustClient
+                    foreach (Process proc in Process.GetProcessesByName("RustClient"))
+                    {
+                        //Kill each client, even though there should only be one
+                        proc.Kill();
+                    }
+                });
+
                 if (blSendKey)
                 {
                     StopSendKey();
@@ -259,25 +277,25 @@ namespace RustCraft
                 //Do actions on the main thread instead of the timer background thread
                 this.Dispatcher.Invoke((Action)(() =>
                 {
-                    //Reset all text fields and update totals
-                    txtGunpowder.Text = "";
-                    txtExplosives.Text = "";
-                    txt556Ammo.Text = "";
-                    txtLGF.Text = "";
-                    txtRockets.Text = "";
-                    txtC4.Text = "";
-                    txtGuns.Text = "";
-                    txtArmor.Text = "";
-                    txtClothes.Text = "";
-                    CalculateTotal();
+                //Reset all text fields and update totals
+                txtGunpowder.Text = "";
+                txtExplosives.Text = "";
+                txt556Ammo.Text = "";
+                txtLGF.Text = "";
+                txtRockets.Text = "";
+                txtC4.Text = "";
+                txtGuns.Text = "";
+                txtArmor.Text = "";
+                txtClothes.Text = "";
+                CalculateTotal();
 
-                    //Change timer to never resume and change button text
-                    this.timer.Change(Timeout.Infinite, Timeout.Infinite);
+                //Change timer to never resume and change button text
+                this.timer.Change(Timeout.Infinite, Timeout.Infinite);
                     blShutdown = false;
                     btnToggle.Content = "Enable Rust Shutdown";
 
-                    //Create new log item and insert to listbox
-                    DateTime date = DateTime.Now;
+                //Create new log item and insert to listbox
+                DateTime date = DateTime.Now;
                     NewLogEntry("Rust shut down at " + date.ToString("hh:mm:ss tt"));
                 }));
             }
@@ -313,7 +331,7 @@ namespace RustCraft
                     SetUpTimer(ts);
                     btnToggle.Content = "Disable Rust Shutdown";
                     blShutdown = true;
-                    SetFocusSendKeys();
+                    SetFocusSendKeys("6");
                     //Create new log item and insert to listbox
                     NewLogEntry("Enabled Rust Shutdown for " + date.ToString("hh:mm:ss tt"));
                 }
@@ -344,7 +362,7 @@ namespace RustCraft
                      StartSendKey();
                     if (blSendKey)
                     {
-                        SetFocusSendKeys();
+                        SetFocusSendKeys("6");
                     }
                 }
                 else
