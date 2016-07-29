@@ -228,11 +228,8 @@ namespace RustCraft
                     IntPtr ipHwnd = arrProcesses[0].MainWindowHandle;
                     //Set focus to the window
                     bool fSuccess = SetForegroundWindow(ipHwnd);
-                    if (fSuccess)
-                    {
-                        //Send the 6 key to eat food
-                        SendKeys.SendWait(key);
-                    }
+                    //Send the 6 key to eat food
+                    SendKeys.SendWait(key);
                 }
             }  
         }
@@ -254,34 +251,36 @@ namespace RustCraft
 
         private void ShutdownRust()
         {
-            try
+            this.Dispatcher.Invoke((Action)(() =>
             {
-
-                //Send E to turn Campfire off
-                SetFocusSendKeys("e");
-                NewLogEntry("Turning off Campfire.");
+                if (chkCampfire.IsEnabled)
+                {
+                    //Send E to turn Campfire off
+                    SetFocusSendKeys("e");
+                    NewLogEntry("Turning off Campfire");
+                }
+            }));
 
                 //Wait 5 seconds
-                Task.Delay(5000).ContinueWith(_ =>
-                {
+                Task.Delay(2000).ContinueWith(_ =>
+                 {
                     //Find processes with the name RustClient
                     foreach (Process proc in Process.GetProcessesByName("RustClient"))
-                    {
+                     {
                         //Kill each client, even though there should only be one
                         proc.Kill();
-                    }
-                });
+                     }
+                 });
 
-                //Stop the sendkey timer
-                if (blSendKey)
-                {
-                    StopSendKey();
-                }
-                //Do actions on the main thread instead of the timer background thread
                 this.Dispatcher.Invoke((Action)(() =>
                 {
+                //Stop the sendkey timer
+                if (blSendKey)
+                    {
+                        StopSendKey();
+                    }
                 //Reset all text fields and update totals
-                    txtGunpowder.Text = "";
+                txtGunpowder.Text = "";
                     txtExplosives.Text = "";
                     txt556Ammo.Text = "";
                     txtLGF.Text = "";
@@ -302,11 +301,6 @@ namespace RustCraft
                 DateTime date = DateTime.Now;
                     NewLogEntry("Rust shut down at " + date.ToString("hh:mm:ss tt"));
                 }));
-            }
-            catch(Exception ex)
-            {
-                System.Windows.MessageBox.Show(ex.Message);
-            }
         }
 
         private void btnToggle_Click(object sender, RoutedEventArgs e)
@@ -365,10 +359,13 @@ namespace RustCraft
         private void NewLogEntry(string msg)
         {
             //Create new log item and insert to listbox
-            var timenow = DateTime.Now.ToString("hh:mm:ss tt");
-            ListBoxItem itm = new ListBoxItem();
-            itm.Content = timenow + " - " + msg;
-            lbLog.Items.Insert(0, itm);
+            this.Dispatcher.Invoke((Action)(() =>
+            {
+                var timenow = DateTime.Now.ToString("hh:mm:ss tt");
+                ListBoxItem itm = new ListBoxItem();
+                itm.Content = timenow + " - " + msg;
+                lbLog.Items.Insert(0, itm);
+            }));
         }
 
         private void Window_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
