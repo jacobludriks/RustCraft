@@ -184,7 +184,7 @@ namespace RustCraft
         {
             if (blSendKey == false)
             {
-                tSendKey = new System.Timers.Timer(TimeSpan.FromMinutes(30).TotalMilliseconds);
+                tSendKey = new System.Timers.Timer(TimeSpan.FromMinutes(60).TotalMilliseconds);
                 tSendKey.Elapsed += SendKeyHandler;
                 tSendKey.AutoReset = true;
                 tSendKey.Enabled = true;
@@ -210,6 +210,7 @@ namespace RustCraft
         private void SendKeyHandler(Object source, ElapsedEventArgs e)
         {
             SetFocusSendKeys("6");
+            NewLogEntry("Auto Eating food in Slot 6.");
         }
 
         //This called when the SendKey timer ticks
@@ -258,6 +259,7 @@ namespace RustCraft
 
                 //Send E to turn Campfire off
                 SetFocusSendKeys("e");
+                NewLogEntry("Turning off Campfire.");
 
                 //Wait 5 seconds
                 Task.Delay(5000).ContinueWith(_ =>
@@ -278,16 +280,17 @@ namespace RustCraft
                 this.Dispatcher.Invoke((Action)(() =>
                 {
                 //Reset all text fields and update totals
-                txtGunpowder.Text = "";
-                txtExplosives.Text = "";
-                txt556Ammo.Text = "";
-                txtLGF.Text = "";
-                txtRockets.Text = "";
-                txtC4.Text = "";
-                txtGuns.Text = "";
-                txtArmor.Text = "";
-                txtClothes.Text = "";
-                CalculateTotal();
+                    txtGunpowder.Text = "";
+                    txtExplosives.Text = "";
+                    txt556Ammo.Text = "";
+                    txtLGF.Text = "";
+                    txtRockets.Text = "";
+                    txtC4.Text = "";
+                    txtGuns.Text = "";
+                    txtArmor.Text = "";
+                    txtClothes.Text = "";
+                    txtHESW.Text = "";
+                    CalculateTotal();
 
                 //Change timer to never resume and change button text
                 this.timer.Change(Timeout.Infinite, Timeout.Infinite);
@@ -331,7 +334,23 @@ namespace RustCraft
                     SetUpTimer(ts);
                     btnToggle.Content = "Disable Rust Shutdown";
                     blShutdown = true;
-                    SetFocusSendKeys("6");
+
+                    //Check if campfire mode is enabled, and turn on campfire.
+                    if(chkCampfire.IsEnabled)
+                    {
+                        SetFocusSendKeys("e");
+                        NewLogEntry("Turning on Campfire.");
+                    }
+
+                    //Check if Auto Eat is enabled, and send 6 to rust.
+                    if (blSendKey)
+                    {
+                        Task.Delay(1000).ContinueWith(_ =>
+                        {
+                            SetFocusSendKeys("6");
+                            NewLogEntry("Selecting food in slot 6.");
+                        });
+                    }
                     //Create new log item and insert to listbox
                     NewLogEntry("Enabled Rust Shutdown for " + date.ToString("hh:mm:ss tt"));
                 }
@@ -359,8 +378,11 @@ namespace RustCraft
                 //start or stop the timer.
                 if(blSendKey == false)
                 {
-                     StartSendKey();
-                    if (blSendKey)
+                    StartSendKey();
+                    NewLogEntry("Auto Eat Enabled.");
+
+                    //If the shutdown timer has already started set rust focus and press 6.
+                    if (blShutdown)
                     {
                         SetFocusSendKeys("6");
                     }
@@ -370,6 +392,7 @@ namespace RustCraft
                     if (blSendKey == true)
                     {
                         StopSendKey();
+                        NewLogEntry("Auto Eat Disabled.");
                     }
                 }
 
