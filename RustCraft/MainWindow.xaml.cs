@@ -272,6 +272,7 @@ namespace RustCraft
                     }
                 });
 
+                //Stop the sendkey timer
                 if (blSendKey)
                 {
                     StopSendKey();
@@ -396,6 +397,15 @@ namespace RustCraft
                     }
                 }
 
+            }
+        }
+
+        private void chkCampfire_Checked(object sender, RoutedEventArgs e)
+        {
+            if(blShutdown)
+            {
+                SetFocusSendKeys("e");
+                NewLogEntry("Turning on Campfire.");
             }
         }
     }

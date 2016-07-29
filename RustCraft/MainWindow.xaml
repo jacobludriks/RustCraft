@@ -45,6 +45,6 @@
         <TextBlock x:Name="textBlock1_Copy7" HorizontalAlignment="Left" Margin="10,286,0,0" TextWrapping="Wrap" Text="High External Stone Walls" VerticalAlignment="Top"/>
         <TextBox x:Name="txtHESW" HorizontalAlignment="Left" Height="23" Margin="207,285,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="90" TextChanged="updateTotal"/>
         <TextBox x:Name="txtHESWTotal" HorizontalAlignment="Left" Height="23" Margin="317,285,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="86" IsEnabled="False" Text="0"/>
-        <CheckBox x:Name="chkCampfire" Content="Campfire Mode" HorizontalAlignment="Left" Margin="10,326,0,0" VerticalAlignment="Top" ToolTip="If enabled will send 'e' to turn off a campfire before shutting down Rust"/>
+        <CheckBox x:Name="chkCampfire" Content="Campfire Mode" HorizontalAlignment="Left" Margin="207,326,0,0" VerticalAlignment="Top" ToolTip="If enabled will send 'e' to turn off a campfire before shutting down Rust" Checked="chkCampfire_Checked"/>
     </Grid>
 </Window>
