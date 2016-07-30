@@ -176,35 +176,29 @@ namespace RustCraft
 
         private System.Threading.Timer timer;
         private System.Timers.Timer tSendKey;
-        private bool blSendKey = false;
         private bool blShutdown = false;
 
         //Start timer to set focus and send keys
         private void StartSendKey()
         {
-            if (blSendKey == false)
+            if (tSendKey.Enabled  == false)
             {
                 tSendKey = new System.Timers.Timer(TimeSpan.FromMinutes(60).TotalMilliseconds);
                 tSendKey.Elapsed += SendKeyHandler;
                 tSendKey.AutoReset = true;
                 tSendKey.Enabled = true;
-                blSendKey = true;
-                this.Dispatcher.Invoke((Action)(() =>
-                {
-                    lblAutoEat.Text = "AUTO EAT";
-                }));
             }
         }
         
         //Stop the timer
         private void StopSendKey()
         {
-            this.Dispatcher.Invoke((Action)(() =>
+            if(tSendKey.Enabled == true)
             {
-                lblAutoEat.Text = "";
-            }));
-            tSendKey.Dispose();
-            blSendKey = false;
+                tSendKey.Stop();
+                tSendKey.Dispose();
+            }
+
         }
 
         private void SendKeyHandler(Object source, ElapsedEventArgs e)
@@ -261,26 +255,25 @@ namespace RustCraft
                 }
             }));
 
-                //Wait 5 seconds
-                Task.Delay(2000).ContinueWith(_ =>
-                 {
-                    //Find processes with the name RustClient
-                    foreach (Process proc in Process.GetProcessesByName("RustClient"))
-                     {
-                        //Kill each client, even though there should only be one
-                        proc.Kill();
-                     }
-                 });
+            //Wait 5 seconds
+            Thread.Sleep(5000);
 
-                this.Dispatcher.Invoke((Action)(() =>
-                {
-                //Stop the sendkey timer
-                if (blSendKey)
+                //Find processes with the name RustClient
+                foreach (Process proc in Process.GetProcessesByName("RustClient"))
                     {
-                        StopSendKey();
+                    //Kill each client, even though there should only be one
+                    proc.Kill();
                     }
+
+            //Stop the Sendkey timer
+            StopSendKey();
+
+            this.Dispatcher.Invoke((Action)(() =>
+                {
+
+                        
                 //Reset all text fields and update totals
-                txtGunpowder.Text = "";
+                    txtGunpowder.Text = "";
                     txtExplosives.Text = "";
                     txt556Ammo.Text = "";
                     txtLGF.Text = "";
@@ -293,7 +286,8 @@ namespace RustCraft
                     CalculateTotal();
 
                 //Change timer to never resume and change button text
-                this.timer.Change(Timeout.Infinite, Timeout.Infinite);
+                    this.timer.Change(Timeout.Infinite, Timeout.Infinite);
+                    this.timer.Dispose();
                     blShutdown = false;
                     btnToggle.Content = "Enable Rust Shutdown";
 
@@ -331,20 +325,19 @@ namespace RustCraft
                     blShutdown = true;
 
                     //Check if campfire mode is enabled, and turn on campfire.
-                    if(chkCampfire.IsEnabled)
+                    if(chkCampfire.IsChecked == true)
                     {
                         SetFocusSendKeys("e");
                         NewLogEntry("Turning on Campfire.");
                     }
 
+                    Thread.Sleep(1000);
+
                     //Check if Auto Eat is enabled, and send 6 to rust.
-                    if (blSendKey)
+                    if (tSendKey.Enabled == true)
                     {
-                        Task.Delay(1000).ContinueWith(_ =>
-                        {
                             SetFocusSendKeys("6");
                             NewLogEntry("Selecting food in slot 6.");
-                        });
                     }
                     //Create new log item and insert to listbox
                     NewLogEntry("Enabled Rust Shutdown for " + date.ToString("hh:mm:ss tt"));
@@ -374,7 +367,7 @@ namespace RustCraft
             if (e.Key == Key.F8 && (Keyboard.Modifiers & (ModifierKeys.Control | ModifierKeys.Shift)) == (ModifierKeys.Control | ModifierKeys.Shift))
             {
                 //start or stop the timer.
-                if(blSendKey == false)
+                if(tSendKey.Enabled == false)
                 {
                     StartSendKey();
                     NewLogEntry("Auto Eat Enabled.");
@@ -387,11 +380,7 @@ namespace RustCraft
                 }
                 else
                 {
-                    if (blSendKey == true)
-                    {
-                        StopSendKey();
-                        NewLogEntry("Auto Eat Disabled.");
-                    }
+
                 }
 
             }
@@ -403,6 +392,30 @@ namespace RustCraft
             {
                 SetFocusSendKeys("e");
                 NewLogEntry("Turning on Campfire.");
+            }
+        }
+
+        private void chkAutoEat_Checked(object sender, RoutedEventArgs e)
+        {
+            if (tSendKey.Enabled == false)
+            {
+                StartSendKey();
+                NewLogEntry("Auto Eat Enabled.");
+
+                //If the shutdown timer has already started set rust focus and press 6.
+                if (blShutdown)
+                {
+                    SetFocusSendKeys("6");
+                }
+            }
+        }
+
+        private void chkAutoEat_Unchecked(object sender, RoutedEventArgs e)
+        {
+            if (tSendKey.Enabled == true)
+            {
+                StopSendKey();
+                NewLogEntry("Auto Eat Disabled.");
             }
         }
     }

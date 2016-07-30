@@ -15,17 +15,17 @@
         <TextBox x:Name="txtExplosivesTotal" HorizontalAlignment="Left" Height="23" Margin="317,61,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="86" IsEnabled="False" Text="0"/>
         <TextBlock x:Name="textBlock2" HorizontalAlignment="Left" Margin="317,6,0,0" TextWrapping="Wrap" Text="Total" VerticalAlignment="Top"/>
         <TextBlock x:Name="textBlock3" HorizontalAlignment="Left" Margin="207,6,0,0" TextWrapping="Wrap" Text="Units" VerticalAlignment="Top"/>
-        <TextBox x:Name="txtSubtotal" HorizontalAlignment="Left" Height="23" Margin="317,318,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="86" IsEnabled="False" Text="0"/>
-        <TextBlock x:Name="textBlock4" HorizontalAlignment="Left" Margin="10,348,0,0" TextWrapping="Wrap" Text="Rust shutdown time" VerticalAlignment="Top"/>
-        <TextBox x:Name="txtShutdown" HorizontalAlignment="Left" Height="23" Margin="129,346,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="79" IsEnabled="False"/>
-        <Button x:Name="btnToggle" Content="Enable Rust Shutdown" HorizontalAlignment="Left" Margin="231,346,0,0" VerticalAlignment="Top" Width="170" Click="btnToggle_Click" IsEnabled="False" Height="23"/>
+        <TextBox x:Name="txtSubtotal" HorizontalAlignment="Left" Height="24" Margin="317,328,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="86" IsEnabled="False" Text="0"/>
+        <TextBlock x:Name="textBlock4" HorizontalAlignment="Left" Margin="10,358,0,0" TextWrapping="Wrap" Text="Rust shutdown time" VerticalAlignment="Top"/>
+        <TextBox x:Name="txtShutdown" HorizontalAlignment="Left" Height="24" Margin="129,356,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="79" IsEnabled="False"/>
+        <Button x:Name="btnToggle" Content="Enable Rust Shutdown" HorizontalAlignment="Left" Margin="231,356,0,0" VerticalAlignment="Top" Width="170" Click="btnToggle_Click" IsEnabled="False" Height="24"/>
         <TextBlock x:Name="textBlock1_Copy" HorizontalAlignment="Left" Margin="10,146,0,0" TextWrapping="Wrap" Text="Ammo (5.56/Pistol/12 Guage)" VerticalAlignment="Top"/>
         <TextBox x:Name="txt556Ammo" HorizontalAlignment="Left" Height="23" Margin="207,145,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="90" TextChanged="updateTotal"/>
         <TextBox x:Name="txt556AmmoTotal" HorizontalAlignment="Left" Height="23" Margin="317,145,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="86" IsEnabled="False" Text="0"/>
         <TextBlock x:Name="textBlock1_Copy1" HorizontalAlignment="Left" Margin="10,174,0,0" TextWrapping="Wrap" Text="Low Grade Fuel" VerticalAlignment="Top"/>
         <TextBox x:Name="txtLGF" HorizontalAlignment="Left" Height="23" Margin="207,173,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="90" TextChanged="updateTotal"/>
         <TextBox x:Name="txtLGFTotal" HorizontalAlignment="Left" Height="23" Margin="317,173,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="86" IsEnabled="False" Text="0"/>
-        <ListBox x:Name="lbLog" HorizontalAlignment="Left" Height="182" Margin="8,374,0,0" VerticalAlignment="Top" Width="393"/>
+        <ListBox x:Name="lbLog" HorizontalAlignment="Left" Height="182" Margin="8,384,0,0" VerticalAlignment="Top" Width="393"/>
         <TextBlock x:Name="textBlock1_Copy2" HorizontalAlignment="Left" Margin="10,90,0,0" TextWrapping="Wrap" Text="Rockets" VerticalAlignment="Top"/>
         <TextBox x:Name="txtRockets" HorizontalAlignment="Left" Height="23" Margin="207,89,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="90" TextChanged="updateTotal"/>
         <TextBox x:Name="txtRocketsTotal" HorizontalAlignment="Left" Height="23" Margin="317,89,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="86" IsEnabled="False" Text="0"/>
@@ -41,10 +41,10 @@
         <TextBlock x:Name="textBlock1_Copy6" HorizontalAlignment="Left" Margin="10,258,0,0" TextWrapping="Wrap" Text="Clothes" VerticalAlignment="Top"/>
         <TextBox x:Name="txtClothes" HorizontalAlignment="Left" Height="23" Margin="207,257,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="90" TextChanged="updateTotal"/>
         <TextBox x:Name="txtClothesTotal" HorizontalAlignment="Left" Height="23" Margin="317,257,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="86" IsEnabled="False" Text="0"/>
-        <TextBlock x:Name="lblAutoEat" HorizontalAlignment="Left" Margin="10,318,0,0" TextWrapping="Wrap" VerticalAlignment="Top"/>
         <TextBlock x:Name="textBlock1_Copy7" HorizontalAlignment="Left" Margin="10,286,0,0" TextWrapping="Wrap" Text="High External Stone Walls" VerticalAlignment="Top"/>
         <TextBox x:Name="txtHESW" HorizontalAlignment="Left" Height="23" Margin="207,285,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="90" TextChanged="updateTotal"/>
         <TextBox x:Name="txtHESWTotal" HorizontalAlignment="Left" Height="23" Margin="317,285,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="86" IsEnabled="False" Text="0"/>
-        <CheckBox x:Name="chkCampfire" Content="Campfire Mode" HorizontalAlignment="Left" Margin="207,326,0,0" VerticalAlignment="Top" ToolTip="If enabled will send 'e' to turn off a campfire before shutting down Rust" Checked="chkCampfire_Checked"/>
+        <CheckBox x:Name="chkCampfire" Content="Campfire Mode" HorizontalAlignment="Left" Margin="207,336,0,0" VerticalAlignment="Top" ToolTip="If enabled will send 'e' to turn off a campfire before shutting down Rust" Checked="chkCampfire_Checked"/>
+        <CheckBox x:Name="chkAutoEat" Content="Auto Eat" HorizontalAlignment="Left" Margin="207,316,0,0" VerticalAlignment="Top" ToolTip="If enabled will send 'e' to turn off a campfire before shutting down Rust" Checked="chkAutoEat_Checked" Unchecked="chkAutoEat_Unchecked"/>
     </Grid>
 </Window>
