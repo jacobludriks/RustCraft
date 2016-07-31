@@ -181,7 +181,7 @@ namespace RustCraft
         //Start timer to set focus and send keys
         private void StartSendKey()
         {
-            if (tSendKey.Enabled  == false)
+            if (tSendKey == null || tSendKey.Enabled  == false)
             {
                 tSendKey = new System.Timers.Timer(TimeSpan.FromMinutes(60).TotalMilliseconds);
                 tSendKey.Elapsed += SendKeyHandler;
@@ -193,7 +193,7 @@ namespace RustCraft
         //Stop the timer
         private void StopSendKey()
         {
-            if(tSendKey.Enabled == true)
+        if (tSendKey != null && tSendKey.Enabled == true)
             {
                 tSendKey.Stop();
                 tSendKey.Dispose();
@@ -261,9 +261,9 @@ namespace RustCraft
                 //Find processes with the name RustClient
                 foreach (Process proc in Process.GetProcessesByName("RustClient"))
                     {
-                    //Kill each client, even though there should only be one
-                    proc.Kill();
-                    }
+                //Kill each client, even though there should only be one
+                proc.Kill();
+            }
 
             //Stop the Sendkey timer
             StopSendKey();
@@ -309,7 +309,11 @@ namespace RustCraft
                 this.timer.Change(Timeout.Infinite, Timeout.Infinite);
                 btnToggle.Content = "Enable Rust Shutdown";
                 blShutdown = false;
-
+                if(chkAutoEat.IsChecked == true)
+                {
+                    StopSendKey();
+                }
+                
                 //Create new log item and insert to listbox
                 NewLogEntry("Disabled Rust Shutdown");
             }
@@ -334,8 +338,10 @@ namespace RustCraft
                     Thread.Sleep(1000);
 
                     //Check if Auto Eat is enabled, and send 6 to rust.
-                    if (tSendKey.Enabled == true)
+
+                    if (chkAutoEat.IsChecked == true)
                     {
+                            StartSendKey();
                             SetFocusSendKeys("6");
                             NewLogEntry("Selecting food in slot 6.");
                     }
@@ -361,31 +367,6 @@ namespace RustCraft
             }));
         }
 
-        private void Window_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
-        {
-            //Capture Ctrl + Shift + F8
-            if (e.Key == Key.F8 && (Keyboard.Modifiers & (ModifierKeys.Control | ModifierKeys.Shift)) == (ModifierKeys.Control | ModifierKeys.Shift))
-            {
-                //start or stop the timer.
-                if(tSendKey.Enabled == false)
-                {
-                    StartSendKey();
-                    NewLogEntry("Auto Eat Enabled.");
-
-                    //If the shutdown timer has already started set rust focus and press 6.
-                    if (blShutdown)
-                    {
-                        SetFocusSendKeys("6");
-                    }
-                }
-                else
-                {
-
-                }
-
-            }
-        }
-
         private void chkCampfire_Checked(object sender, RoutedEventArgs e)
         {
             if(blShutdown)
@@ -397,26 +378,25 @@ namespace RustCraft
 
         private void chkAutoEat_Checked(object sender, RoutedEventArgs e)
         {
-            if (tSendKey.Enabled == false)
+            if (tSendKey == null || tSendKey.Enabled == false)
             {
-                StartSendKey();
-                NewLogEntry("Auto Eat Enabled.");
-
                 //If the shutdown timer has already started set rust focus and press 6.
                 if (blShutdown)
                 {
+                    StartSendKey();
                     SetFocusSendKeys("6");
                 }
             }
+            NewLogEntry("Auto Eat Enabled.");
         }
 
         private void chkAutoEat_Unchecked(object sender, RoutedEventArgs e)
         {
-            if (tSendKey.Enabled == true)
+            if (tSendKey != null && tSendKey.Enabled == true)
             {
                 StopSendKey();
-                NewLogEntry("Auto Eat Disabled.");
             }
+            NewLogEntry("Auto Eat Disabled.");
         }
     }
 }

@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:RustCraft"
         mc:Ignorable="d"
-        Title="RustCraft" Height="604.576" Width="427.506" KeyDown="Window_KeyDown">
+        Title="RustCraft" Height="604.576" Width="427.506">
     <Grid Margin="0,0,-15.2,-19.6">
         <TextBlock x:Name="textBlock" HorizontalAlignment="Left" Margin="10,34,0,0" TextWrapping="Wrap" Text="Gun Powder" VerticalAlignment="Top"/>
         <TextBlock x:Name="textBlock1" HorizontalAlignment="Left" Margin="10,62,0,0" TextWrapping="Wrap" Text="Explosives" VerticalAlignment="Top"/>
