@@ -34,6 +34,8 @@ namespace RustCraft
         [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
         public static extern bool SetForegroundWindow(IntPtr hWnd);
 
+        public bool blCampfire;
+
         private void updateTotal(object sender, TextChangedEventArgs e)
         {
             //Get originating textbox
@@ -50,10 +52,10 @@ namespace RustCraft
             switch (txtbox.Name.ToString())
             {
                 case "txtGunpowder":
-                    value = value * 10;
+                    value = value * 2;
                     break;
                 case "txtExplosives":
-                    value = value * 10;
+                    value = value * 5;
                     break;
                 case "txt556Ammo":
                     value = value * 10;
@@ -137,8 +139,8 @@ namespace RustCraft
             {
                 hesw = 0;
             }
-            gunpowder = gunpowder * 10;
-            explosives = explosives * 10;
+            gunpowder = gunpowder * 2;
+            explosives = explosives * 5;
             ammo = ammo * 10;
             lgf = lgf * 5;
             rockets = rockets * 10;
@@ -213,7 +215,7 @@ namespace RustCraft
         {
             if(tAntiAFK == null || tAntiAFK.Enabled == false)
             {
-                tAntiAFK = new System.Timers.Timer(TimeSpan.FromMinutes(10).TotalMilliseconds);
+                tAntiAFK = new System.Timers.Timer(TimeSpan.FromSeconds(10).TotalMilliseconds);
                 tAntiAFK.Elapsed += AntiAFKHandler;
                 tAntiAFK.AutoReset = true;
                 tAntiAFK.Enabled = true;
@@ -231,7 +233,7 @@ namespace RustCraft
 
         private void AntiAFKHandler(Object source, ElapsedEventArgs e)
         {
-            SetFocusSendKeys("{SPACE}");
+            SetFocusSendKeys(" ");
             NewLogEntry("Anti AFK Jump.");
         }
 
@@ -242,7 +244,7 @@ namespace RustCraft
             if (blShutdown)
             {
                 string strProcessName;
-                strProcessName = "Notepad";
+                strProcessName = "RustClient";
                 //Find the Rust Client
                 Process[] arrProcesses = Process.GetProcessesByName(strProcessName);
                 if (arrProcesses.Length > 0)
@@ -274,21 +276,18 @@ namespace RustCraft
 
         private void ShutdownRust()
         {
-            this.Dispatcher.Invoke((Action)(() =>
-            {
-                if (chkCampfire.IsChecked == true)
+                if (blCampfire == true)
                 {
                     //Send E to turn Campfire off
                     SetFocusSendKeys("e");
                     NewLogEntry("Turning off Campfire");
                 }
-            }));
 
             //Wait 5 seconds
             Thread.Sleep(5000);
 
                 //Find processes with the name RustClient
-                foreach (Process proc in Process.GetProcessesByName("Notepad"))
+                foreach (Process proc in Process.GetProcessesByName("RustClient"))
                 {
                     //Kill each client, even though there should only be one
                     proc.Kill();
@@ -296,6 +295,8 @@ namespace RustCraft
 
             //Stop the Sendkey timer
             StopSendKey();
+            //Stop AFK Timer
+            StopAntiAFK();
 
             this.Dispatcher.Invoke((Action)(() =>
                 {
@@ -417,6 +418,7 @@ namespace RustCraft
 
         private void chkCampfire_Checked(object sender, RoutedEventArgs e)
         {
+            blCampfire = true;
             if(blShutdown)
             {
                 SetFocusSendKeys("e");
@@ -467,6 +469,16 @@ namespace RustCraft
                 StopAntiAFK();
             }
             NewLogEntry("Anti AFK Disabled.");
+        }
+
+        private void chkCampfire_Unchecked(object sender, RoutedEventArgs e)
+        {
+            blCampfire = false;
+            if (blShutdown)
+            {
+                SetFocusSendKeys("e");
+                NewLogEntry("Turning off Campfire.");
+            }
         }
     }
 }

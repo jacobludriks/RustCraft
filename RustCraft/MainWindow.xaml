@@ -44,7 +44,7 @@
         <TextBlock x:Name="textBlock1_Copy7" HorizontalAlignment="Left" Margin="10,286,0,0" TextWrapping="Wrap" Text="High External Stone Walls" VerticalAlignment="Top"/>
         <TextBox x:Name="txtHESW" HorizontalAlignment="Left" Height="23" Margin="207,285,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="90" TextChanged="updateTotal"/>
         <TextBox x:Name="txtHESWTotal" HorizontalAlignment="Left" Height="23" Margin="317,285,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="86" IsEnabled="False" Text="0"/>
-        <CheckBox x:Name="chkCampfire" Content="Campfire Mode" HorizontalAlignment="Left" Margin="207,342,0,0" VerticalAlignment="Top" ToolTip="If enabled will send 'e' to turn off a campfire before shutting down Rust" Checked="chkCampfire_Checked"/>
+        <CheckBox x:Name="chkCampfire" Content="Campfire Mode" HorizontalAlignment="Left" Margin="207,342,0,0" VerticalAlignment="Top" ToolTip="If enabled will send 'e' to turn off a campfire before shutting down Rust" Checked="chkCampfire_Checked" Unchecked="chkCampfire_Unchecked"/>
         <CheckBox x:Name="chkAutoEat" Content="Auto Eat" HorizontalAlignment="Left" Margin="317,342,0,0" VerticalAlignment="Top" ToolTip="If enabled will use any food put in slot 6 every hour." Checked="chkAutoEat_Checked" Unchecked="chkAutoEat_Unchecked"/>
         <CheckBox x:Name="chkAntiAFK" Content="Anti AFK" HorizontalAlignment="Left" Margin="207,322,0,0" VerticalAlignment="Top" ToolTip="Will send SPACE every 10 mins." Checked="chkAntiAFK_Checked" Unchecked="chkAntiAFK_Unchecked"/>
     </Grid>
