@@ -17,7 +17,7 @@ using System.Threading;
 using System.Timers;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
-
+using WindowsInput;
 
 namespace RustCraft
 {
@@ -33,8 +33,6 @@ namespace RustCraft
         //API-declaration
         [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
         public static extern bool SetForegroundWindow(IntPtr hWnd);
-
-        public bool blCampfire;
 
         private void updateTotal(object sender, TextChangedEventArgs e)
         {
@@ -52,10 +50,10 @@ namespace RustCraft
             switch (txtbox.Name.ToString())
             {
                 case "txtGunpowder":
-                    value = value * 2;
+                    value = value * 10;
                     break;
                 case "txtExplosives":
-                    value = value * 5;
+                    value = value * 10;
                     break;
                 case "txt556Ammo":
                     value = value * 10;
@@ -139,8 +137,8 @@ namespace RustCraft
             {
                 hesw = 0;
             }
-            gunpowder = gunpowder * 2;
-            explosives = explosives * 5;
+            gunpowder = gunpowder * 10;
+            explosives = explosives * 10;
             ammo = ammo * 10;
             lgf = lgf * 5;
             rockets = rockets * 10;
@@ -207,7 +205,9 @@ namespace RustCraft
 
         private void SendKeyHandler(Object source, ElapsedEventArgs e)
         {
-            SetFocusSendKeys("6");
+            SetFocus();
+            var sim = new InputSimulator();
+            sim.Keyboard.KeyPress(WindowsInput.Native.VirtualKeyCode.OEM_6);
             NewLogEntry("Auto Eating food in Slot 6.");
         }
 
@@ -215,7 +215,7 @@ namespace RustCraft
         {
             if(tAntiAFK == null || tAntiAFK.Enabled == false)
             {
-                tAntiAFK = new System.Timers.Timer(TimeSpan.FromSeconds(10).TotalMilliseconds);
+                tAntiAFK = new System.Timers.Timer(TimeSpan.FromMinutes(5).TotalMilliseconds);
                 tAntiAFK.Elapsed += AntiAFKHandler;
                 tAntiAFK.AutoReset = true;
                 tAntiAFK.Enabled = true;
@@ -233,18 +233,21 @@ namespace RustCraft
 
         private void AntiAFKHandler(Object source, ElapsedEventArgs e)
         {
-            SetFocusSendKeys(" ");
+            SetFocus();
+            var sim = new InputSimulator();
+            sim.Keyboard.KeyPress(WindowsInput.Native.VirtualKeyCode.SPACE);
             NewLogEntry("Anti AFK Jump.");
         }
 
 
         //This called when the SendKey timer ticks
-        private void SetFocusSendKeys(string key)
+        private void SetFocus()
         {
             if (blShutdown)
             {
+                   
                 string strProcessName;
-                strProcessName = "RustClient";
+                strProcessName = "Notepad";
                 //Find the Rust Client
                 Process[] arrProcesses = Process.GetProcessesByName(strProcessName);
                 if (arrProcesses.Length > 0)
@@ -253,8 +256,6 @@ namespace RustCraft
                     IntPtr ipHwnd = arrProcesses[0].MainWindowHandle;
                     //Set focus to the window
                     bool fSuccess = SetForegroundWindow(ipHwnd);
-                    //Send the 6 key to eat food
-                    SendKeys.SendWait(key);
                 }
             }  
         }
@@ -276,18 +277,21 @@ namespace RustCraft
 
         private void ShutdownRust()
         {
-                if (blCampfire == true)
+            this.Dispatcher.Invoke((Action)(() =>
+            {
+                if (chkCampfire.IsChecked == true)
                 {
                     //Send E to turn Campfire off
-                    SetFocusSendKeys("e");
+                    SetFocus();
                     NewLogEntry("Turning off Campfire");
                 }
+            }));
 
             //Wait 5 seconds
             Thread.Sleep(5000);
 
                 //Find processes with the name RustClient
-                foreach (Process proc in Process.GetProcessesByName("RustClient"))
+                foreach (Process proc in Process.GetProcessesByName("Notepad"))
                 {
                     //Kill each client, even though there should only be one
                     proc.Kill();
@@ -295,8 +299,6 @@ namespace RustCraft
 
             //Stop the Sendkey timer
             StopSendKey();
-            //Stop AFK Timer
-            StopAntiAFK();
 
             this.Dispatcher.Invoke((Action)(() =>
                 {
@@ -362,7 +364,7 @@ namespace RustCraft
                     //Check if campfire mode is enabled, and turn on campfire.
                     if(chkCampfire.IsChecked == true)
                     {
-                        SetFocusSendKeys("e");
+                        SetFocus();
                         blWaitToSend = true;
                         NewLogEntry("Turning on Campfire.");
                     }
@@ -376,7 +378,7 @@ namespace RustCraft
                             Thread.Sleep(1000);
                         }
                         StartSendKey();
-                        SetFocusSendKeys("6");
+                        SetFocus();
                         blWaitToSend = true;
                         NewLogEntry("Selecting food in slot 6.");
                     }
@@ -390,7 +392,7 @@ namespace RustCraft
                             Thread.Sleep(1000);
                         }
                         StartAntiAFK();
-                        SetFocusSendKeys(" ");
+                        SetFocus();
                         blWaitToSend = true;
                         NewLogEntry("Anti AFK Jumping.");
                     }
@@ -418,10 +420,9 @@ namespace RustCraft
 
         private void chkCampfire_Checked(object sender, RoutedEventArgs e)
         {
-            blCampfire = true;
             if(blShutdown)
             {
-                SetFocusSendKeys("e");
+                SetFocus();
                 NewLogEntry("Turning on Campfire.");
             }
         }
@@ -434,7 +435,7 @@ namespace RustCraft
                 if (blShutdown)
                 {
                     StartSendKey();
-                    SetFocusSendKeys("6");
+                    SetFocus();
                 }
             }
             NewLogEntry("Auto Eat Enabled.");
@@ -456,7 +457,7 @@ namespace RustCraft
                 if(blShutdown)
                 {
                     StartAntiAFK();
-                    SetFocusSendKeys(" ");
+                    SetFocus();
                 }
             }
             NewLogEntry("Anti AFK Enabled.");
@@ -469,16 +470,6 @@ namespace RustCraft
                 StopAntiAFK();
             }
             NewLogEntry("Anti AFK Disabled.");
-        }
-
-        private void chkCampfire_Unchecked(object sender, RoutedEventArgs e)
-        {
-            blCampfire = false;
-            if (blShutdown)
-            {
-                SetFocusSendKeys("e");
-                NewLogEntry("Turning off Campfire.");
-            }
         }
     }
 }
