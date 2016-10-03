@@ -50,10 +50,10 @@ namespace RustCraft
             switch (txtbox.Name.ToString())
             {
                 case "txtGunpowder":
-                    value = value * 10;
+                    value = value * 2;
                     break;
                 case "txtExplosives":
-                    value = value * 10;
+                    value = value * 5;
                     break;
                 case "txt556Ammo":
                     value = value * 10;
@@ -137,8 +137,8 @@ namespace RustCraft
             {
                 hesw = 0;
             }
-            gunpowder = gunpowder * 10;
-            explosives = explosives * 10;
+            gunpowder = gunpowder * 2;
+            explosives = explosives * 5;
             ammo = ammo * 10;
             lgf = lgf * 5;
             rockets = rockets * 10;
@@ -215,7 +215,7 @@ namespace RustCraft
         {
             if(tAntiAFK == null || tAntiAFK.Enabled == false)
             {
-                tAntiAFK = new System.Timers.Timer(TimeSpan.FromMinutes(5).TotalMilliseconds);
+                tAntiAFK = new System.Timers.Timer(TimeSpan.FromSeconds(10).TotalMilliseconds);
                 tAntiAFK.Elapsed += AntiAFKHandler;
                 tAntiAFK.AutoReset = true;
                 tAntiAFK.Enabled = true;
@@ -470,6 +470,11 @@ namespace RustCraft
                 StopAntiAFK();
             }
             NewLogEntry("Anti AFK Disabled.");
+        }
+
+        private void chkCampfire_Unchecked(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }
