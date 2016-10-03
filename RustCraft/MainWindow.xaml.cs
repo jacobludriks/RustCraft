@@ -247,7 +247,7 @@ namespace RustCraft
             {
                    
                 string strProcessName;
-                strProcessName = "Notepad";
+                strProcessName = "RustClient";
                 //Find the Rust Client
                 Process[] arrProcesses = Process.GetProcessesByName(strProcessName);
                 if (arrProcesses.Length > 0)
@@ -291,7 +291,7 @@ namespace RustCraft
             Thread.Sleep(5000);
 
                 //Find processes with the name RustClient
-                foreach (Process proc in Process.GetProcessesByName("Notepad"))
+                foreach (Process proc in Process.GetProcessesByName("RustClient"))
                 {
                     //Kill each client, even though there should only be one
                     proc.Kill();
